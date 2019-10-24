@@ -2,6 +2,7 @@ from urllib import error, request
 import argparse
 
 url = "https://www.gitignore.io/api/"
+# HTTP headers
 header = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/\
         537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
@@ -9,6 +10,7 @@ header = {
 
 
 def main():
+    # argument parser
     parser = argparse.ArgumentParser(
         'gi-python',
         description='Command line tool for gitignore.io from python'
@@ -24,8 +26,8 @@ def main():
         '{}/{}'.format(url, ','.join(args.name)),
         headers=header
         )
+    # Request for gitignore
     get_gitignore(req)
-    # res = get_gitignore(req)
 
 
 def get_gitignore(req):
@@ -35,7 +37,6 @@ def get_gitignore(req):
             print(body.decode('utf-8'))
             return body
     except error.HTTPError as err:
-        # print(err.code)
         if(err.code == 404):
             print('can not find gitignore.')
         else:
