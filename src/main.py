@@ -15,11 +15,15 @@ def main():
         )
     parser.add_argument(
         'name',
+        nargs='+',
         help='ignore environment name.',
         metavar='Envname'
         )
     args = parser.parse_args()
-    req = request.Request('{}/{}'.format(url, args.name), headers=header)
+    req = request.Request(
+        '{}/{}'.format(url, ','.join(args.name)),
+        headers=header
+        )
     get_gitignore(req)
     # res = get_gitignore(req)
 
@@ -31,7 +35,11 @@ def get_gitignore(req):
             print(body.decode('utf-8'))
             return body
     except error.HTTPError as err:
-        print(err.code)
+        # print(err.code)
+        if(err.code == 404):
+            print('can not find gitignore.')
+        else:
+            print(err.code)
     except error.URLError as err:
         print(err.code)
 
